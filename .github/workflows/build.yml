@@ -1,0 +1,53 @@
+name: Build Electron App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      # 下载 FFmpeg
+      - name: Download FFmpeg
+
+        shell: powershell
+
+        run: |
+
+          Invoke-WebRequest `
+          -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" `
+          -OutFile "ffmpeg.zip"
+
+          Expand-Archive ffmpeg.zip -DestinationPath ffmpeg
+
+          $ffmpeg = Get-ChildItem -Recurse ffmpeg.exe | Select-Object -First 1
+          $ffprobe = Get-ChildItem -Recurse ffprobe.exe | Select-Object -First 1
+
+          Copy-Item $ffmpeg.FullName ./ffmpeg.exe
+          Copy-Item $ffprobe.FullName ./ffprobe.exe
+
+      - name: Build Electron
+        run: npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tvm3u8-electron
+          path: dist/*.exe
