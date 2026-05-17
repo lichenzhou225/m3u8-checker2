@@ -1,7 +1,10 @@
 {
   "name": "tvm3u8",
   "version": "1.0.0",
+  "description": "M3U8 批量检测器 Electron 版",
   "main": "main.js",
+  "author": "tvm3u8",
+  "license": "ISC",
 
   "scripts": {
     "start": "electron .",
@@ -21,24 +24,60 @@
     "files": [
       "**/*",
       "!dist/*",
-      "!uploads/*"
+      "!uploads/*",
+      "!node_modules/.cache/*"
     ],
 
-    "win": {
-      "target": "nsis"
-    }
+    "extraResources": [
+      {
+        "from": "ffmpeg.exe",
+        "to": "ffmpeg.exe"
+      },
+      {
+        "from": "ffprobe.exe",
+        "to": "ffprobe.exe"
+      },
+      {
+        "from": "public",
+        "to": "public"
+      }
+    ],
 
+    "asar": false,
+
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "M3U8检测器"
+    },
+
+    "publish": null
   },
 
   "dependencies": {
-    "express": "^4.18.2",
-    "fluent-ffmpeg": "^2.1.2",
+    "express": "^4.19.2",
+    "fluent-ffmpeg": "^2.1.3",
     "multer": "^1.4.5-lts.1",
-    "unzipper": "^0.10.11"
+    "unzipper": "^0.10.14"
   },
 
   "devDependencies": {
-    "electron": "^30.0.0",
+    "electron": "^30.0.9",
     "electron-builder": "^24.13.3"
   }
 }
