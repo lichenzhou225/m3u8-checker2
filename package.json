@@ -1,0 +1,44 @@
+{
+  "name": "tvm3u8",
+  "version": "1.0.0",
+  "main": "main.js",
+
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+
+  "build": {
+
+    "appId": "com.tvm3u8.app",
+
+    "productName": "M3U8检测器",
+
+    "directories": {
+      "output": "dist"
+    },
+
+    "files": [
+      "**/*",
+      "!dist/*",
+      "!uploads/*"
+    ],
+
+    "win": {
+      "target": "nsis"
+    }
+
+  },
+
+  "dependencies": {
+    "express": "^4.18.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "multer": "^1.4.5-lts.1",
+    "unzipper": "^0.10.11"
+  },
+
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}
